@@ -29,12 +29,16 @@ public class ArquivoEntity {
 
     @Column(nullable = false)
     private String contentType;
+
     @Column(name = "tamanho_bytes", nullable = false)
-    private Long tamanhoBytes;
+    private long tamanhoBytes;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ArquivoStatus arquivoStatus;
+
+    @Column(name = "mensagem_erro", columnDefinition = "text")
+    private String mensagemErro;
 
     @Column(name = "texto_extraido", nullable = false)
     private String textoExtraido;
