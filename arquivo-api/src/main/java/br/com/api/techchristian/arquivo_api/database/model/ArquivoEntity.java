@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "DB_ARQUIVO")
+@Table(name = "db_arquivo")
 public class ArquivoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -27,7 +27,7 @@ public class ArquivoEntity {
     @Column(nullable = false)
     private String caminho;
 
-    @Column(nullable = false)
+    @Column(name = "content_type", nullable = false)
     private String contentType;
 
     @Column(name = "tamanho_bytes", nullable = false)
@@ -40,7 +40,7 @@ public class ArquivoEntity {
     @Column(name = "mensagem_erro", columnDefinition = "text")
     private String mensagemErro;
 
-    @Column(name = "texto_extraido", nullable = false)
+    @Column(name = "texto_extraido")
     private String textoExtraido;
 
     @Column(name = "criado_em", nullable = false, updatable = false)
