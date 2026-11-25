@@ -29,7 +29,6 @@ public class ArquivoService {
     private String uploadsDir;
 
     public ArquivoUploadResponse upload(ArquivoUploadRequest request) {
-        log.info("Arquivo upload recebido: {}", request);
 
         MultipartFile file = request.file();
         validar(file);
