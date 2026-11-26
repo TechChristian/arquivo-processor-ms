@@ -3,15 +3,18 @@ package br.com.api.techchristian.arquivo_api.service;
 
 import br.com.api.techchristian.arquivo_api.database.model.ArquivoEntity;
 import br.com.api.techchristian.arquivo_api.database.repository.IArquivoRepository;
+import br.com.api.techchristian.arquivo_api.dto.ArquivoDetalhesResponse;
 import br.com.api.techchristian.arquivo_api.dto.ArquivoUploadRequest;
 import br.com.api.techchristian.arquivo_api.dto.ArquivoUploadResponse;
 import br.com.api.techchristian.arquivo_api.exception.ArmazenamentoException;
 import br.com.api.techchristian.arquivo_api.exception.ArquivoInvalidoException;
+import br.com.api.techchristian.arquivo_api.exception.ArquivoNaoEncontradoException;
 import br.com.api.techchristian.arquivo_api.mapper.ArquivoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -24,6 +27,7 @@ import java.util.UUID;
 @Slf4j
 public class ArquivoService {
     private final IArquivoRepository arquivoRepository;
+    private final ArquivoMapper arquivoMapper;
 
     @Value("${app.uploads-dir}")
     private String uploadsDir;
@@ -81,5 +85,20 @@ public class ArquivoService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public ArquivoDetalhesResponse buscarArquivoId(UUID arquivoId) {
+
+        ArquivoEntity entity = buscarId(arquivoId);
+
+        return arquivoMapper.toResponseDetalhes(entity);
+    }
+
+    private ArquivoEntity buscarId(UUID arquivoId) {
+        return arquivoRepository.findById(arquivoId)
+                .orElseThrow(
+                        () -> new ArquivoNaoEncontradoException("Arquivo não encontrado.")
+                );
+
+    }
 }
 
